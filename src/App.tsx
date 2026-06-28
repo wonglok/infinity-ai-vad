@@ -15,7 +15,6 @@ function MainApp() {
   const { startListening, stopListening } = useVoiceTurn()
   const appPhase = useVoiceStore((s) => s.appPhase)
 
-  // Init / Error screens
   if (appPhase === 'error') {
     return <ErrorScreen />
   }
@@ -24,21 +23,44 @@ function MainApp() {
   const isInit = !isReady
 
   if (isInit) {
-    return <InitScreen />
+    return (
+      <div style={{ position: 'relative', height: '100%' }}>
+        <div className="bg-blobs">
+          <div className="bg-blob bg-blob-1" />
+          <div className="bg-blob bg-blob-2" />
+          <div className="bg-blob bg-blob-3" />
+        </div>
+        <div style={{ position: 'relative', zIndex: 1, height: '100%' }}>
+          <InitScreen />
+        </div>
+      </div>
+    )
   }
 
-  // Main voice assistant UI
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-      <StatusIndicator />
-      <ConversationView />
-      <div style={{ padding: '8px 0 0' }}>
-        <AudioVisualizer />
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      height: '100%',
+      position: 'relative',
+      background: '#FFF8F0',
+    }}>
+      <div className="bg-blobs">
+        <div className="bg-blob bg-blob-1" />
+        <div className="bg-blob bg-blob-2" />
+        <div className="bg-blob bg-blob-3" />
       </div>
-      <div style={{ padding: '16px 0 24px' }}>
-        <ListenButton onStart={startListening} onStop={stopListening} />
+      <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', height: '100%' }}>
+        <StatusIndicator />
+        <ConversationView />
+        <div style={{ padding: '4px 0 0' }}>
+          <AudioVisualizer />
+        </div>
+        <div style={{ padding: '12px 0 20px' }}>
+          <ListenButton onStart={startListening} onStop={stopListening} />
+        </div>
+        <ModelPanel />
       </div>
-      <ModelPanel />
     </div>
   )
 }

@@ -2,22 +2,21 @@ import { useEffect, useRef } from 'react'
 import { useVoiceStore } from '../stores/useVoiceStore'
 import type { PipelineStatus } from '../types'
 
-const BAR_COUNT = 32
 const WIDTH = 240
-const HEIGHT = 60
-const BAR_WIDTH = 4
-const GAP = 3
+const HEIGHT = 56
+const DOT_COUNT = 16
+const DOT_RADIUS = 5
 
-function getBarColor(_i: number, _total: number, status: PipelineStatus): string {
+function getDotColor(status: PipelineStatus): string {
   switch (status) {
     case 'listening':
-      return '#3b82f6'
+      return '#FF8C42'
     case 'processing':
-      return '#f59e0b'
+      return '#FFB74D'
     case 'speaking':
-      return '#22c55e'
+      return '#7CB342'
     default:
-      return '#334155'
+      return '#FFD4B8'
   }
 }
 
@@ -27,54 +26,53 @@ export function AudioVisualizer() {
   const animationRef = useRef<number>(0)
   const levelRef = useRef(0)
 
-  // Smooth audio level
   useEffect(() => {
-    levelRef.current += (audioLevel - levelRef.current) * 0.3
+    levelRef.current += (audioLevel - levelRef.current) * 0.25
   }, [audioLevel])
 
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
-
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
     const draw = () => {
       const level = levelRef.current
       const isActive = pipelineStatus === 'listening' || pipelineStatus === 'speaking'
-      const barColor = getBarColor(0, BAR_COUNT, pipelineStatus)
+      const color = getDotColor(pipelineStatus)
 
       ctx.clearRect(0, 0, WIDTH, HEIGHT)
 
-      const totalWidth = BAR_COUNT * BAR_WIDTH + (BAR_COUNT - 1) * GAP
-      const startX = (WIDTH - totalWidth) / 2
+      const spacing = WIDTH / (DOT_COUNT + 1)
+      const centerY = HEIGHT / 2
 
-      for (let i = 0; i < BAR_COUNT; i++) {
-        let height: number
+      for (let i = 0; i < DOT_COUNT; i++) {
+        const x = spacing * (i + 1)
+        let radius: number
+        let alpha: number
 
         if (isActive && isSpeechDetected) {
-          // Animated bars based on audio level
-          const phase = (Date.now() / 200 + i * 0.3) % (Math.PI * 2)
-          const baseHeight = Math.sin(phase) * 0.5 + 0.5
-          height = Math.max(3, baseHeight * level * HEIGHT * 0.8 + 3)
+          const phase = (Date.now() / 150 + i * 0.35) % (Math.PI * 2)
+          const wave = Math.sin(phase) * 0.5 + 0.5
+          radius = Math.max(2, DOT_RADIUS * 0.3 + wave * level * DOT_RADIUS * 2)
+          alpha = 0.5 + wave * 0.5
         } else if (isActive) {
-          // Gentle ambient animation
-          const phase = (Date.now() / 400 + i * 0.4) % (Math.PI * 2)
-          height = Math.max(2, (Math.sin(phase) * 0.3 + 0.3) * HEIGHT * 0.3)
+          const phase = (Date.now() / 350 + i * 0.3) % (Math.PI * 2)
+          radius = Math.max(2, DOT_RADIUS * 0.35 + (Math.sin(phase) * 0.2 + 0.2) * DOT_RADIUS)
+          alpha = 0.35 + Math.sin(phase) * 0.15
         } else {
-          // Idle: flat line
-          height = 2
+          radius = 2
+          alpha = 0.25
         }
 
-        const x = startX + i * (BAR_WIDTH + GAP)
-        const y = (HEIGHT - height) / 2
-
-        ctx.fillStyle = barColor
+        ctx.fillStyle = color
+        ctx.globalAlpha = alpha
         ctx.beginPath()
-        ctx.roundRect(x, y, BAR_WIDTH, height, 2)
+        ctx.arc(x, centerY, radius, 0, Math.PI * 2)
         ctx.fill()
       }
 
+      ctx.globalAlpha = 1
       animationRef.current = requestAnimationFrame(draw)
     }
 

@@ -1,9 +1,5 @@
 import type { ReactNode } from 'react'
 
-interface Props {
-  children: ReactNode
-}
-
 export function ErrorBoundaryFallback({ error, onRetry }: { error: string; onRetry: () => void }) {
   return (
     <div style={{
@@ -14,31 +10,45 @@ export function ErrorBoundaryFallback({ error, onRetry }: { error: string; onRet
       height: '100%',
       padding: 32,
       textAlign: 'center',
-      gap: 16,
+      gap: 14,
+      background: '#FFF8F0',
     }}>
-      <div style={{ fontSize: 48 }}>&#9888;</div>
-      <h2 style={{ fontSize: 20, fontWeight: 600 }}>Something went wrong</h2>
-      <p style={{ color: '#94a3b8', maxWidth: 400, fontSize: 14 }}>{error}</p>
+      <div style={{ fontSize: 56, animation: 'float 3s ease-in-out infinite', lineHeight: 1 }}>
+        &#x1F4A5;
+      </div>
+      <h2 style={{ fontSize: 20, fontWeight: 700, color: '#FF8C42' }}>
+        Uh-oh! A wild crash appeared!
+      </h2>
+      <p style={{
+        color: '#C4956A',
+        maxWidth: 340,
+        fontSize: 13,
+        lineHeight: 1.6,
+        fontWeight: 500,
+      }}>
+        {error}
+      </p>
       <button
         onClick={onRetry}
         style={{
-          padding: '10px 24px',
-          borderRadius: 8,
+          padding: '12px 32px',
+          borderRadius: 20,
           border: 'none',
-          background: '#3b82f6',
+          background: 'linear-gradient(135deg, #FFB088, #FF8C42)',
           color: '#fff',
-          fontSize: 14,
-          fontWeight: 600,
+          fontSize: 15,
+          fontWeight: 700,
           cursor: 'pointer',
+          boxShadow: '0 4px 16px rgba(255, 140, 66, 0.3)',
+          transition: 'all 0.3s',
         }}
       >
-        Retry
+        Try Again &#x1F308;
       </button>
     </div>
   )
 }
 
-// Simple error boundary using React componentDidCatch pattern
 import { Component } from 'react'
 
 interface EBState {
