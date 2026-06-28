@@ -9,7 +9,7 @@ import { StatusIndicator } from "./components/StatusIndicator";
 import { AudioVisualizer } from "./components/AudioVisualizer";
 import { ListenButton } from "./components/ListenButton";
 import { ConversationView } from "./components/ConversationView";
-import { ModelPanel } from "./components/ModelPanel";
+// import { ModelPanel } from "./components/ModelPanel";
 
 function MainApp() {
   const { startListening, stopListening } = useVoiceTurn();
