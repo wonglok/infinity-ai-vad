@@ -38,7 +38,7 @@ export function ListenButton({ onStart, onStop }: Props) {
   }
 
   let label = 'Tap me!'
-  let sublabel = 'I\'m ready to listen \u{1F442}'
+  let sublabel = "I'm ready to listen \u{1F442}"
   if (isDenied) {
     label = 'Mic blocked \u{1F622}'
     sublabel = 'Please allow in browser settings'
@@ -55,9 +55,7 @@ export function ListenButton({ onStart, onStop }: Props) {
 
   return (
     <div style={{ textAlign: 'center' }}>
-      {/* Shadow + button */}
       <div style={{ position: 'relative', display: 'inline-block' }}>
-        {/* Shadow blob */}
         <div style={{
           position: 'absolute',
           bottom: -6,
@@ -80,10 +78,10 @@ export function ListenButton({ onStart, onStop }: Props) {
             borderRadius: '50%',
             border: '3px solid',
             borderColor: isListening
-              ? '#FF8C42'
+              ? '#E07030'
               : isDisabled
-                ? '#FFD4B8'
-                : '#FFB088',
+                ? '#E8C8B0'
+                : '#CC7030',
             background: isListening
               ? 'linear-gradient(135deg, #FFF0E5, #FFE0CC)'
               : isDisabled
@@ -95,12 +93,12 @@ export function ListenButton({ onStart, onStop }: Props) {
                 ? '0 3px 12px rgba(255, 180, 136, 0.15), inset 0 1px 0 rgba(255,255,255,0.5)'
                 : '0 4px 20px rgba(255, 180, 136, 0.25), inset 0 1px 0 rgba(255,255,255,0.6)',
             color: isDenied
-              ? '#FF8FAB'
+              ? '#E05570'
               : isListening
-                ? '#FF8C42'
+                ? '#E07030'
                 : isDisabled
-                  ? '#FFD4B8'
-                  : '#FFB088',
+                  ? '#D4A080'
+                  : '#CC7030',
             cursor: isDisabled || isDenied ? 'not-allowed' : 'pointer',
             display: 'flex',
             alignItems: 'center',
@@ -121,17 +119,17 @@ export function ListenButton({ onStart, onStop }: Props) {
 
       <p style={{
         fontSize: 15,
-        fontWeight: 600,
-        color: isDenied ? '#FF8FAB' : '#8B6B52',
+        fontWeight: 700,
+        color: isDenied ? '#E05570' : '#5C3D2E',
         marginTop: 16,
         animation: isListening ? 'pulse-soft 0.8s ease-in-out infinite' : 'none',
       }}>
         {label}
       </p>
       <p style={{
-        fontSize: 12,
+        fontSize: 13,
         fontWeight: 500,
-        color: '#D4B896',
+        color: '#8B6B52',
         marginTop: 4,
         maxWidth: 220,
         marginLeft: 'auto',

@@ -10,13 +10,13 @@ const DOT_RADIUS = 5
 function getDotColor(status: PipelineStatus): string {
   switch (status) {
     case 'listening':
-      return '#FF8C42'
+      return '#E07030'
     case 'processing':
-      return '#FFB74D'
+      return '#C77800'
     case 'speaking':
-      return '#7CB342'
+      return '#5C8A2F'
     default:
-      return '#FFD4B8'
+      return '#E0B898'
   }
 }
 

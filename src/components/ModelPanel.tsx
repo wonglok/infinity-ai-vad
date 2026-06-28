@@ -35,7 +35,7 @@ export function ModelPanel() {
           justifyContent: 'space-between',
           background: 'none',
           border: 'none',
-          color: '#C4956A',
+          color: '#8B5E3C',
           fontSize: 12,
           fontWeight: 600,
           cursor: 'pointer',
@@ -52,6 +52,7 @@ export function ModelPanel() {
           transform: open ? 'rotate(180deg)' : 'none',
           transition: 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
           fontSize: 10,
+          color: '#8B5E3C',
         }}>
           &#9660;
         </span>
@@ -82,11 +83,11 @@ export function ModelPanel() {
                   padding: '8px 12px',
                   borderRadius: 14,
                   background: isLoaded
-                    ? 'rgba(124, 179, 66, 0.06)'
+                    ? 'rgba(92, 138, 47, 0.07)'
                     : isError
-                      ? 'rgba(255, 143, 171, 0.06)'
+                      ? 'rgba(224, 85, 112, 0.07)'
                       : isLoading
-                        ? 'rgba(255, 183, 77, 0.06)'
+                        ? 'rgba(199, 120, 0, 0.07)'
                         : '#FFFBF7',
                   animation: `slide-up 0.3s ease-out ${i * 0.04}s both`,
                 }}
@@ -98,7 +99,7 @@ export function ModelPanel() {
                   <span style={{
                     fontSize: 11,
                     fontWeight: 600,
-                    color: isLoaded ? '#7CB342' : isError ? '#FF8FAB' : isLoading ? '#FFB74D' : '#D4B896',
+                    color: isLoaded ? '#5C8A2F' : isError ? '#E05570' : isLoading ? '#C77800' : '#8B6B52',
                   }}>
                     {MODEL_LABELS[MODEL_IDS[id]]}
                   </span>
@@ -109,19 +110,19 @@ export function ModelPanel() {
                   padding: '3px 10px',
                   borderRadius: 10,
                   background: isLoaded
-                    ? 'rgba(124, 179, 66, 0.12)'
+                    ? 'rgba(92, 138, 47, 0.12)'
                     : isError
-                      ? 'rgba(255, 143, 171, 0.12)'
+                      ? 'rgba(224, 85, 112, 0.12)'
                       : isLoading
-                        ? 'rgba(255, 183, 77, 0.12)'
+                        ? 'rgba(199, 120, 0, 0.12)'
                         : '#FFE8D6',
                   color: isLoaded
-                    ? '#7CB342'
+                    ? '#5C8A2F'
                     : isError
-                      ? '#FF8FAB'
+                      ? '#E05570'
                       : isLoading
-                        ? '#FFB74D'
-                        : '#C4956A',
+                        ? '#C77800'
+                        : '#8B5E3C',
                 }}>
                   {model.status === 'downloading' ? `${model.progress}%` : model.status}
                 </span>

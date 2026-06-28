@@ -38,7 +38,7 @@ export function ConversationView() {
             &#x1F9B8;
           </div>
           <p style={{
-            color: '#D4B896',
+            color: '#8B6B52',
             fontSize: 14,
             fontWeight: 500,
             textAlign: 'center',
@@ -73,7 +73,7 @@ export function ConversationView() {
               <p style={{
                 fontSize: 11,
                 fontWeight: 600,
-                color: '#FFB088',
+                color: '#CC7030',
                 marginBottom: 3,
                 textTransform: 'uppercase',
                 letterSpacing: '0.5px',
@@ -82,8 +82,8 @@ export function ConversationView() {
               </p>
               <p style={{
                 fontSize: 14,
-                fontWeight: 500,
-                color: '#5C3D2E',
+                fontWeight: 600,
+                color: '#4A2D1E',
                 lineHeight: 1.55,
               }}>
                 {turn.transcript}
@@ -103,7 +103,7 @@ export function ConversationView() {
               <p style={{
                 fontSize: 11,
                 fontWeight: 600,
-                color: '#FF8C42',
+                color: '#E07030',
                 marginBottom: 3,
                 textTransform: 'uppercase',
                 letterSpacing: '0.5px',
@@ -112,8 +112,8 @@ export function ConversationView() {
               </p>
               <p style={{
                 fontSize: 14,
-                fontWeight: 500,
-                color: '#5C3D2E',
+                fontWeight: 600,
+                color: '#4A2D1E',
                 lineHeight: 1.55,
               }}>
                 {turn.response}
@@ -145,7 +145,7 @@ export function ConversationView() {
               <p style={{
                 fontSize: 11,
                 fontWeight: 600,
-                color: '#FFB088',
+                color: '#CC7030',
                 marginBottom: 3,
                 textTransform: 'uppercase',
                 letterSpacing: '0.5px',
@@ -154,8 +154,8 @@ export function ConversationView() {
               </p>
               <p style={{
                 fontSize: 14,
-                fontWeight: 500,
-                color: '#5C3D2E',
+                fontWeight: 600,
+                color: '#4A2D1E',
                 lineHeight: 1.55,
               }}>
                 {partialTranscript}
@@ -175,7 +175,7 @@ export function ConversationView() {
               <p style={{
                 fontSize: 11,
                 fontWeight: 600,
-                color: '#FF8C42',
+                color: '#E07030',
                 marginBottom: 3,
                 textTransform: 'uppercase',
                 letterSpacing: '0.5px',
@@ -184,8 +184,8 @@ export function ConversationView() {
               </p>
               <p style={{
                 fontSize: 14,
-                fontWeight: 500,
-                color: '#5C3D2E',
+                fontWeight: 600,
+                color: '#4A2D1E',
                 lineHeight: 1.55,
               }}>
                 {streamedResponse}
@@ -194,7 +194,7 @@ export function ConversationView() {
                     display: 'inline-block',
                     width: 3,
                     height: 16,
-                    background: '#FF8C42',
+                    background: '#E07030',
                     borderRadius: 2,
                     marginLeft: 2,
                     animation: 'pulse-cute 0.6s ease-in-out infinite',

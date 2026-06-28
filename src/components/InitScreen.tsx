@@ -73,7 +73,7 @@ export function InitScreen() {
           Infinity AI
         </h1>
         <p style={{
-          color: '#C4956A',
+          color: '#8B5E3C',
           fontSize: 15,
           marginTop: 2,
           fontWeight: 500,
@@ -125,7 +125,7 @@ export function InitScreen() {
               <span style={{
                 fontSize: 14,
                 fontWeight: 500,
-                color: isActive ? '#FF7A3D' : isDone ? '#C4956A' : '#D4B896',
+                color: isActive ? '#E07030' : isDone ? '#8B5E3C' : '#A08060',
               }}>
                 {phase.label}
               </span>
@@ -208,19 +208,19 @@ export function InitScreen() {
                 {(model.status === 'loading') && (
                   <span style={{
                     fontSize: 11,
-                    fontWeight: 500,
-                    color: '#FFB088',
+                    fontWeight: 600,
+                    color: '#C77800',
                   }}>
                     warming up...
                   </span>
                 )}
                 {(model.status === 'loaded') && (
-                  <span style={{ fontSize: 11, fontWeight: 500, color: '#7CB342' }}>
+                  <span style={{ fontSize: 11, fontWeight: 600, color: '#5C8A2F' }}>
                     ready!
                   </span>
                 )}
                 {model.status === 'error' && (
-                  <span style={{ fontSize: 11, fontWeight: 500, color: '#FF8FAB' }}>
+                  <span style={{ fontSize: 11, fontWeight: 600, color: '#E05570' }}>
                     oops!
                   </span>
                 )}
@@ -232,7 +232,7 @@ export function InitScreen() {
 
       <p style={{
         fontSize: 12,
-        color: '#D4B896',
+        color: '#A08060',
         textAlign: 'center',
         maxWidth: 280,
         lineHeight: 1.5,

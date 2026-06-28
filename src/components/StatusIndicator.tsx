@@ -9,29 +9,29 @@ const STATUS_CONFIG: Record<PipelineStatus, {
   pulse: boolean
 }> = {
   idle: {
-    color: '#FFB088',
-    bg: 'rgba(255, 176, 136, 0.12)',
+    color: '#CC7030',
+    bg: 'rgba(204, 112, 48, 0.12)',
     label: 'Ready to chat!',
     emoji: '\u{1F4AD}',
     pulse: false,
   },
   listening: {
-    color: '#FF8C42',
-    bg: 'rgba(255, 140, 66, 0.15)',
+    color: '#E07030',
+    bg: 'rgba(224, 112, 48, 0.15)',
     label: 'Listening...',
     emoji: '\u{1F442}',
     pulse: true,
   },
   processing: {
-    color: '#FFB74D',
-    bg: 'rgba(255, 183, 77, 0.15)',
+    color: '#C77800',
+    bg: 'rgba(199, 120, 0, 0.15)',
     label: 'Thinking...',
     emoji: '\u{1F9E0}',
     pulse: true,
   },
   speaking: {
-    color: '#7CB342',
-    bg: 'rgba(124, 179, 66, 0.12)',
+    color: '#5C8A2F',
+    bg: 'rgba(92, 138, 47, 0.12)',
     label: 'Speaking...',
     emoji: '\u{1F4E3}',
     pulse: true,

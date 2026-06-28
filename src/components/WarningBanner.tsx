@@ -33,7 +33,7 @@ export function WarningBanner() {
           <p key={i} style={{
             fontSize: 12,
             fontWeight: 500,
-            color: '#C4956A',
+            color: '#8B5E3C',
             lineHeight: 1.5,
             marginBottom: 2,
           }}>
@@ -46,7 +46,7 @@ export function WarningBanner() {
         style={{
           background: 'none',
           border: 'none',
-          color: '#FFB088',
+          color: '#CC7030',
           fontSize: 18,
           cursor: 'pointer',
           padding: 0,

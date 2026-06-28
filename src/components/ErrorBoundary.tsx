@@ -20,7 +20,7 @@ export function ErrorBoundaryFallback({ error, onRetry }: { error: string; onRet
         Uh-oh! A wild crash appeared!
       </h2>
       <p style={{
-        color: '#C4956A',
+        color: '#8B5E3C',
         maxWidth: 340,
         fontSize: 13,
         lineHeight: 1.6,

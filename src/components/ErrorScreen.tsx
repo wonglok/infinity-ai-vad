@@ -26,7 +26,7 @@ export function ErrorScreen() {
         Oh no! Something went wrong...
       </h2>
       <p style={{
-        color: '#C4956A',
+        color: '#8B5E3C',
         maxWidth: 360,
         fontSize: 13,
         lineHeight: 1.6,
