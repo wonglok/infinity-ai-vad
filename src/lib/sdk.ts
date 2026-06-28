@@ -7,6 +7,7 @@ import {
   VoicePipeline,
   AudioCapture,
   AudioPlayback,
+  OPFSStorage,
 } from "@runanywhere/web";
 import { LlamaCPP } from "@runanywhere/web-llamacpp";
 import { ONNX, VAD } from "@runanywhere/web-onnx";
@@ -32,9 +33,45 @@ export async function initSDK(): Promise<void> {
     await LlamaCPP.register();
     await ONNX.register();
     RunAnywhere.registerModels(MODEL_DEFS);
+
+    // registerModels() kicks off refreshDownloadStatus() but doesn't await it.
+    // Poll until the async OPFS scan completes so cached models are detected.
+    await waitForOPFSScan();
   })();
 
   return _initPromise;
+}
+
+// ---- OPFS cache detection ----
+
+const opfs = new OPFSStorage();
+
+async function waitForOPFSScan(): Promise<void> {
+  // refreshDownloadStatus() runs asynchronously after registerModels().
+  // Poll ModelManager until model statuses have settled.
+  for (let attempt = 0; attempt < 30; attempt++) {
+    await new Promise((r) => setTimeout(r, 100));
+    const models = ModelManager.getModels();
+    // If no models are stuck in "registered" state, the scan is done
+    const hasDownloaded = models.some(
+      (m) => m.status === "downloaded" || m.status === "loaded",
+    );
+    if (hasDownloaded) return; // Scan found cached models
+  }
+}
+
+/**
+ * Check if a model file exists in OPFS (persistent browser storage).
+ * Use this before calling downloadModel() to skip models already cached.
+ */
+export async function isModelInOPFS(modelId: string): Promise<boolean> {
+  try {
+    await opfs.initialize();
+    const size = await opfs.getFileSize(modelId);
+    return size !== null && size > 0;
+  } catch {
+    return false;
+  }
 }
 
 // ---- Model download/load helpers ----

@@ -1,6 +1,6 @@
 import { useEffect, useCallback } from 'react'
 import { useVoiceStore } from '../stores/useVoiceStore'
-import { initSDK, downloadModel, loadModel, isModelDownloaded, checkBrowserSupport } from '../lib/sdk'
+import { initSDK, downloadModel, loadModel, isModelInOPFS, checkBrowserSupport } from '../lib/sdk'
 import { MODEL_IDS } from '../constants'
 import type { ModelId } from '../types'
 
@@ -22,19 +22,22 @@ export function useInit() {
         setBrowserWarnings(warnings)
       }
 
-      // Phase 2: Init SDK
+      // Phase 2: Init SDK + register models + wait for OPFS scan
       setAppPhase('initializing')
       await initSDK()
 
-      // Phase 3: Download models
+      // Phase 3: Download models (only if not already cached in OPFS)
       setAppPhase('downloading-models')
-      await Promise.allSettled(
+
+      const downloadResults = await Promise.allSettled(
         ALL_MODELS.map(async (modelId) => {
           const sdkId = MODEL_IDS[modelId]
           try {
-            if (isModelDownloaded(sdkId)) {
+            // Check OPFS first — skip download if already cached
+            const cached = await isModelInOPFS(sdkId)
+            if (cached) {
               updateModel(modelId, { status: 'downloaded', progress: 100 })
-              return
+              return { modelId, cached: true }
             }
 
             updateModel(modelId, { status: 'downloading', progress: 0 })
@@ -55,6 +58,7 @@ export function useInit() {
             })
 
             updateModel(modelId, { status: 'downloaded', progress: 100 })
+            return { modelId, cached: false }
           } catch (err) {
             updateModel(modelId, {
               status: 'error',
@@ -66,11 +70,23 @@ export function useInit() {
       )
 
       // Check if any downloads failed
-      const store = useVoiceStore.getState()
-      const failedModels = ALL_MODELS.filter((id) => store.models[id].status === 'error')
+      const failedModels = downloadResults
+        .filter((r) => r.status === 'rejected')
+        .map((_, i) => ALL_MODELS[i])
+
       if (failedModels.length > 0) {
-        setFatalError(`Failed to download: ${failedModels.join(', ')}. Check network and retry.`)
+        setFatalError(
+          `Failed to download: ${failedModels.join(', ')}. Check your network and try again.`,
+        )
         return
+      }
+
+      // Show how many were cached vs downloaded
+      const cachedCount = downloadResults.filter(
+        (r) => r.status === 'fulfilled' && (r.value as any)?.cached,
+      ).length
+      if (cachedCount > 0) {
+        console.log(`Using ${cachedCount}/${ALL_MODELS.length} models from OPFS cache`)
       }
 
       // Phase 4: Load models (sequential, coexist)
@@ -79,7 +95,6 @@ export function useInit() {
         const sdkId = MODEL_IDS[modelId]
         updateModel(modelId, { status: 'loading' })
 
-        // Retry up to 3 times
         for (let attempt = 1; attempt <= 3; attempt++) {
           try {
             await loadModel(sdkId)
