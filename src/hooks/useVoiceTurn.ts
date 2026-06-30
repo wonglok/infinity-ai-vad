@@ -6,6 +6,8 @@ import {
   setupVAD,
   getPipeline,
   SpeechActivity,
+  ensureAudioContextRunning,
+  isIOS,
 } from '../lib/sdk'
 import { VOICE_SYSTEM_PROMPT, MAX_TOKENS, LLM_TEMPERATURE } from '../constants'
 
@@ -110,11 +112,24 @@ export function useVoiceTurn() {
         },
       )
 
+      // iOS Safari workaround: AudioContext starts suspended even after
+      // a user gesture. Explicitly resume it so audio processing runs.
+      await ensureAudioContextRunning(mic)
+
+      if (isIOS()) {
+        console.log('iOS detected — audio context state:', (mic as any).audioContext?.state)
+      }
+
       setMicStatus('active')
     } catch (err) {
       const msg = (err as Error).message
       if (msg.includes('NotAllowed') || msg.includes('Permission')) {
         setMicStatus('denied')
+        if (isIOS()) {
+          console.warn(
+            'Microphone denied on iOS. User must allow mic in: Settings → Safari → Microphone',
+          )
+        }
       } else {
         setMicStatus('unavailable')
         console.error('Mic error:', err)

@@ -119,6 +119,38 @@ export function createAudioPlayback() {
   return new AudioPlayback({ sampleRate: SAMPLE_RATE_TTS });
 }
 
+/**
+ * Resume a suspended AudioContext — required on iOS Safari where
+ * AudioContext starts suspended even after a user gesture.
+ * Also verifies the actual sample rate matches expectations.
+ */
+export async function ensureAudioContextRunning(capture: AudioCapture): Promise<void> {
+  // audioContext is private in the SDK type defs, but exists at runtime.
+  // This is a deliberate compat workaround for iOS Safari.
+  const ctx = (capture as any).audioContext as AudioContext | null;
+  if (!ctx) return;
+
+  if (ctx.state === "suspended") {
+    console.log("AudioContext suspended — resuming (iOS workaround)");
+    await ctx.resume();
+    console.log("AudioContext resumed, state:", ctx.state, "sampleRate:", ctx.sampleRate);
+  }
+
+  if (ctx.state === "running" && ctx.sampleRate !== SAMPLE_RATE_MIC) {
+    console.warn(
+      `AudioContext sample rate mismatch: expected ${SAMPLE_RATE_MIC}, got ${ctx.sampleRate}. ` +
+        "VAD/STT may not work correctly.",
+    );
+  }
+}
+
+export function isIOS(): boolean {
+  return (
+    /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
+  );
+}
+
 // ---- VAD ----
 
 export function setupVAD() {
